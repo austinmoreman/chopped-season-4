@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chopped: Season 4 — Mystery Basket Draw</title>
+<style>
+:root {
+  --site-primary: #e3442f;
+  --site-on-primary: #fff8e9;
+  --site-secondary: #f4c542;
+  --site-on-secondary: #30251d;
+  --site-background: #fff0d5;
+  --site-on-background: #30251d;
+  --site-font-body: "Trebuchet MS", ui-rounded, Arial, sans-serif;
+  --site-font-heading: "Arial Black", Impact, fantasy;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: light dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--site-background); color: var(--site-on-background); font-family: var(--site-font-body); }
+#app { min-height: 100vh; width: 100%; background-color: light-dark(var(--site-background), #24231f); color: light-dark(var(--site-on-background), #f5efdf); overflow: hidden; background-image: radial-gradient(#e3442f20 1.5px, transparent 1.5px); background-size: 22px 22px; }
+header { background: var(--site-primary); color: var(--site-on-primary); padding: calc(25px * var(--site-spacing-scale)) max(22px, calc((100vw - 1080px)/2)); position: relative; border-bottom: 7px solid var(--site-secondary); }
+.header-inner { max-width: 1080px; margin: auto; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.eyebrow { text-transform: uppercase; letter-spacing: .18em; font-size: 11px; font-weight: 800; opacity:.88; }
+h1 { font: 900 calc( clamp(2rem, 5vw, 3.6rem) * var(--site-heading-scale))/1 var(--site-font-heading); margin: 7px 0 0; letter-spacing:-.055em; text-transform:uppercase; text-shadow:3px 3px 0 #8f251e; }
+.header-note { font-size: 13px; max-width: 210px; text-align:right; line-height:1.5; }
+nav { display:flex; justify-content:center; gap:8px; padding:16px 18px 0; }
+.tab { border:1px solid color-mix(in srgb, var(--site-on-background) 22%, transparent); background:transparent; color:inherit; padding:10px 17px; border-radius:999px; cursor:pointer; font-weight:750; }
+.tab.active { background:var(--site-secondary); color:var(--site-on-secondary); border-color:var(--site-secondary); box-shadow:3px 3px 0 var(--site-primary); }
+main { max-width:1080px; margin:0 auto; padding:28px 22px 60px; }
+.intro { text-align:center; max-width:650px; margin:0 auto 28px; }
+.kicker { color:var(--site-primary); text-transform:uppercase; letter-spacing:.2em; font-size:11px; font-weight:900; }
+h2 { font:900 calc(2rem * var(--site-heading-scale))/1.1 var(--site-font-heading); margin:8px 0 10px; text-transform:uppercase; letter-spacing:-.035em; }
+.sub { line-height:1.55; opacity:.78; margin:0; }
+.panel { background:light-dark(#fffaf0,#302f2a); border:2px solid var(--site-on-background); border-radius:calc(20px * var(--site-radius-scale)); padding:clamp(18px,3vw,30px); box-shadow:7px 7px 0 var(--site-secondary); }
+.name-row { display:flex; gap:10px; max-width:540px; margin:24px auto 0; }
+input, textarea { min-width:0; flex:1; padding:14px 16px; border:1px solid #bdb29e; border-radius:12px; background:light-dark(#fff,#25241f); color:inherit; font:inherit; }
+textarea { flex:1; resize:vertical; padding:14px 16px; border:1px solid #bdb29e; border-radius:12px; background:light-dark(#fff,#25241f); color:inherit; font:inherit; }
+button { font:inherit; font-weight:900; cursor:pointer; border:2px solid var(--site-on-background); border-radius:10px; padding:13px 18px; transition:transform .15s, opacity .15s; text-transform:uppercase; letter-spacing:.035em; }
+button:hover { transform:translateY(-1px); }
+button:disabled { opacity:.42; cursor:not-allowed; transform:none; }
+.primary { background:var(--site-primary); color:var(--site-on-primary); }
+.gold { background:var(--site-secondary); color:var(--site-on-secondary); }
+.ghost { background:transparent; color:inherit; border:1px solid #bdb29e; }
+.small { padding:9px 12px; font-size:13px; }
+.statusline { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin:20px 0 12px; }
+.pill { display:inline-flex; align-items:center; gap:7px; background:light-dark(#f0e8d8,#454139); border-radius:999px; padding:7px 11px; font-size:12px; font-weight:800; }
+.dot { width:8px; height:8px; background:#5e8b55; border-radius:50%; }
+.draw-area { display:grid; grid-template-columns:1fr; gap:14px; }
+.basket { border:2px solid var(--site-on-background); border-radius:16px; padding:18px; background:light-dark(#fffdf7,#292823); position:relative; box-shadow:4px 4px 0 #e3442f; }
+.basket.selected { outline:3px solid var(--site-secondary); border-color:var(--site-secondary); }
+.basket-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.basket-number { font:italic 16px var(--site-font-heading); color:var(--site-primary); }
+.ingredients { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 15px; }
+.ingredient { background:light-dark(#f7d96f,#484237); color:light-dark(#30251d,#fff8e9); padding:9px 12px; border-radius:999px 999px 999px 5px; font-weight:850; font-size:14px; border:1px solid #d59c28; }
+.card-actions { display:flex; justify-content:flex-end; gap:8px; }
+.empty { text-align:center; padding:28px 10px; opacity:.7; }
+.notice { margin:14px 0 0; font-size:13px; line-height:1.5; opacity:.72; text-align:center; }
+.hidden { display:none !important; }
+.claimed-view { text-align:center; }
+.claimed-stamp { display:inline-block; transform:rotate(-4deg); border:3px solid var(--site-primary); color:var(--site-primary); padding:8px 15px; font-weight:950; letter-spacing:.15em; text-transform:uppercase; margin:4px 0 18px; }
+.claimed-view .ingredients { justify-content:center; margin:20px 0; }
+.dashboard-head { display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap; }
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:20px 0; }
+.stat { background:light-dark(#f1e8d8,#414037); border-radius:14px; padding:15px; }
+.stat strong { display:block; font:700 2rem var(--site-font-heading); color:var(--site-primary); }
+.stat span { font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:800; opacity:.7; }
+.admin-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.admin-item { border:1px solid light-dark(#ded4c1,#575247); border-radius:12px; padding:13px; }
+.admin-item .ingredients { margin:8px 0 0; gap:5px; }
+.admin-item .ingredient { font-size:12px; padding:6px 8px; }
+.admin-item.claimed { border-left:4px solid #5e8b55; }
+.admin-item.available { border-left:4px solid var(--site-secondary); }
+.admin-tools { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+footer { text-align:center; font-size:11px; opacity:.55; padding:0 20px 26px; }
+@media (max-width:650px) { .header-inner { align-items:flex-start; flex-direction:column; } .header-note { text-align:left; } .name-row { flex-direction:column; } .stats { grid-template-columns:1fr 1fr; } .admin-list { grid-template-columns:1fr; } }
+@media (prefers-color-scheme:dark) { input, textarea { border-color:#665f52; } }
+</style>
+</head>
+<body>
+<div id="app">
+<header><div class="header-inner"><div><div class="eyebrow">Chopped: Season 4</div><h1>The Mystery Basket Draw</h1></div><div class="header-note">Three ingredients.<br>One inspired dish.<br>Let the games begin.</div></div></header>
+<nav aria-label="Website sections"><button class="tab active" id="participantTab">Participant draw</button><button class="tab" id="organizerTab">Organizer view</button></nav>
+<main>
+<section id="participantSection">
+<div class="intro"><div class="kicker">Chopped: Season 4</div><h2>Claim Your Mystery Basket</h2><p class="sub">1) Check in chef/s<br>2) View up to three baskets<br>3) Claim the best basket<br>4) Opa!</p></div>
+<div class="panel" id="entryPanel">
+<div style="text-align:center"><div class="kicker">Step one</div><h2 style="font-size:1.55rem">Check in chef/s</h2><p class="sub">Enter the names of all chefs on your team.</p></div>
+<div class="name-row"><textarea id="participantNames" maxlength="500" rows="2" placeholder="Enter each chef name, separated by commas or new lines"></textarea><button class="primary" id="startButton">Let's cook</button></div>
+<p class="notice">Your team gets one basket. You can preview up to three different baskets before choosing.</p>
+</div>
+<div class="panel hidden" id="drawPanel">
+<div class="statusline"><div><div class="kicker">Chef checked in</div><strong id="welcomeName"></strong></div><span class="pill"><span class="dot"></span><span id="spinCount">0 of 3 spins used</span></span></div>
+<div id="basketChoices" class="draw-area"><div class="empty">Your mystery baskets will appear here.</div></div>
+<div class="statusline"><button class="gold" id="spinButton">✦ Spin for a basket</button><span class="sub" id="remainingNote">Three chances to find your basket.</span></div>
+<p class="notice">A preview does not reserve a basket. If another team claims one while you’re deciding, it will no longer be available to claim.</p>
+</div>
+<div class="panel hidden claimed-view" id="claimedPanel"><div class="claimed-stamp">Officially claimed</div><div class="kicker">Your mystery basket</div><h2 id="claimedName"></h2><div class="ingredients" id="claimedIngredients"></div><p class="sub">Your basket is locked in. Good luck, chef!</p><p class="kicker" style="margin-top:24px;font-size:14px">See you on December 11th!</p></div>
+</section>
+<section id="organizerSection" class="hidden">
+<div class="panel" id="adminLogin" style="max-width:520px;margin:0 auto 24px">
+<div class="kicker">Organizer access</div><h2 style="font-size:1.5rem">Sign in</h2>
+<div class="name-row" style="flex-direction:column;margin-top:16px"><input id="adminEmail" type="email" placeholder="Organizer email" autocomplete="username"><input id="adminPassword" type="password" placeholder="Password" autocomplete="current-password"><button class="primary" id="adminLoginButton">Sign in</button></div><p class="notice" id="adminLoginMessage">Organizer access only.</p></div>
+<div id="adminDashboard" class="hidden"><div class="dashboard-head"><div><div class="kicker">Behind the pass</div><h2>Organizer dashboard</h2><p class="sub">Monitor claimed baskets and what remains in the pool.</p></div><div class="admin-tools"><button class="ghost small" id="exportButton">Export assignments</button><button class="ghost small" id="resetButton">Reset event</button></div></div>
+<div class="stats"><div class="stat"><strong id="totalStat">33</strong><span>Total baskets</span></div><div class="stat"><strong id="claimedStat">0</strong><span>Claimed</span></div><div class="stat"><strong id="availableStat">33</strong><span>Available</span></div></div>
+<div class="panel"><div class="statusline"><h2 style="font-size:1.45rem;margin:0">Basket inventory</h2><span class="pill" id="inventoryLabel">Loading inventory…</span></div><div id="adminList" class="admin-list"></div></div><p class="notice"><button class="ghost small" id="adminSignOutButton">Sign out</button></p></div>
+</section>
+</main>
+<footer>THE MYSTERY BASKET DRAW · MAY THE MOST CREATIVE CHEF WIN</footer>
+</div>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const SUPABASE_URL = 'https://mhfwqrwqusgulxgrgxlh.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_avL7_Nbj2OnumISe2hncPQ_gTP1JZ3E';
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+const TOKEN_KEY = 'choppedSeason4TeamToken';
+let teamToken = localStorage.getItem(TOKEN_KEY);
+let teamStatus = null;
+let inventory = [];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function message(el, text){ if(el) el.textContent=text; }
+function errorText(err){ return err?.message || String(err || 'Something went wrong.'); }
+function normalizeData(data){ if(Array.isArray(data)) return data[0] ?? {}; if(typeof data==='string'){try{return JSON.parse(data)}catch{return {access_token:data}}} return data || {}; }
+function showParticipant(which){$('participantSection').classList.toggle('hidden',!which);$('organizerSection').classList.toggle('hidden',which);$('participantTab').classList.toggle('active',which);$('organizerTab').classList.toggle('active',!which);}
+function setBusy(button,busy,label){button.disabled=busy;if(busy)button.dataset.oldLabel=button.textContent;button.textContent=busy?'Please wait…':(button.dataset.oldLabel||label);}
+async function callRpc(name,args={}){const {data,error}=await sb.rpc(name,args);if(error)throw error;return data;}
+async function refreshTeam(){if(!teamToken)return false;try{teamStatus=normalizeData(await callRpc('team_status',{p_access_token:teamToken}));renderTeam();return true;}catch(e){localStorage.removeItem(TOKEN_KEY);teamToken=null;teamStatus=null;return false;}}
+function renderTeam(){
+ if(!teamStatus)return;
+ $('entryPanel').classList.add('hidden');
+ const claim=teamStatus.claimed_basket;
+ if(claim){$('drawPanel').classList.add('hidden');$('claimedPanel').classList.remove('hidden');$('claimedName').textContent=teamStatus.team_label||'Your team';$('claimedIngredients').innerHTML=(claim.ingredients||[]).map(x=>`<span class="ingredient">${esc(x)}</span>`).join('');return;}
+ $('claimedPanel').classList.add('hidden');$('drawPanel').classList.remove('hidden');
+ $('welcomeName').textContent=teamStatus.team_label || (teamStatus.chef_names||[]).join(', ');
+ const used=Number(teamStatus.spins_used||0);$('spinCount').textContent=`${used} of 3 spins used`;
+ const previews=teamStatus.previews||[];
+ $('spinButton').disabled=used>=3;
+ $('remainingNote').textContent=used>=3?'Choose one of your previews.':`You can preview ${3-used} more.`;
+ if(!previews.length){$('basketChoices').innerHTML='<div class="empty">Spin to reveal your first mystery basket.</div>';return;}
+ $('basketChoices').innerHTML=previews.map((b)=>{const id=b.basket_id??b.id;const ingredients=b.ingredients||[];const unavailable=b.available===false;return `<article class="basket ${unavailable?'':'selected'}"><div class="basket-top"><span class="basket-number">Mystery basket ${String(id).padStart(2,'0')}</span><span class="pill">${unavailable?'Just claimed':'Preview'}</span></div><div class="ingredients">${ingredients.map(x=>`<span class="ingredient">${esc(x)}</span>`).join('')}</div><div class="card-actions"><button class="gold small" data-claim="${Number(id)}" ${unavailable?'disabled':''}>${unavailable?'Unavailable':'Claim this basket'}</button></div></article>`}).join('');
+ $('basketChoices').querySelectorAll('[data-claim]').forEach(btn=>btn.addEventListener('click',()=>claimBasket(Number(btn.dataset.claim),btn)));
+}
+async function checkIn(){const btn=$('startButton');const names=$('participantNames').value.split(/[\n,;]+/).map(x=>x.trim()).filter(Boolean);const unique=names.map(x=>x.toLocaleLowerCase());if(!names.length){alert('Please enter the names of your team’s chefs.');return;}if(names.length>12){alert('Please enter no more than 12 chef names.');return;}if(new Set(unique).size!==unique.length){alert('A chef name appears more than once. Please check the list.');return;}setBusy(btn,true,"Let's cook");try{const data=normalizeData(await callRpc('team_check_in',{p_chef_names:names}));const token=data.access_token||data.token||data.p_access_token;if(!token)throw new Error('Check-in completed, but the access token was not returned. Please contact the organizer before trying again.');teamToken=token;localStorage.setItem(TOKEN_KEY,token);await refreshTeam();}catch(e){alert(errorText(e));}finally{setBusy(btn,false,"Let's cook");}}
+async function draw(){const btn=$('spinButton');setBusy(btn,true,'✦ Spin for a basket');try{await callRpc('draw_next_basket',{p_access_token:teamToken});await refreshTeam();}catch(e){alert(errorText(e));await refreshTeam();}finally{setBusy(btn,false,'✦ Spin for a basket');}}
+async function claimBasket(id,btn){if(btn)setBusy(btn,true,'Claim this basket');try{await callRpc('claim_basket',{p_access_token:teamToken,p_basket_id:id});await refreshTeam();}catch(e){alert(errorText(e));await refreshTeam();}finally{if(btn)setBusy(btn,false,'Claim this basket');}}
+async function signIn(){const btn=$('adminLoginButton');setBusy(btn,true,'Sign in');message($('adminLoginMessage'),'Signing in…');try{const {error}=await sb.auth.signInWithPassword({email:$('adminEmail').value.trim(),password:$('adminPassword').value});if(error)throw error;$('adminLogin').classList.add('hidden');$('adminDashboard').classList.remove('hidden');await loadInventory();}catch(e){message($('adminLoginMessage'),errorText(e));}finally{setBusy(btn,false,'Sign in');}}
+async function loadInventory(){try{const data=await callRpc('organizer_inventory');inventory=Array.isArray(data)?data:(data?.baskets||data?.inventory||[]);renderInventory();}catch(e){$('adminList').innerHTML=`<div class="empty">Could not load inventory: ${esc(errorText(e))}</div>`;}}
+function renderInventory(){const claimed=inventory.filter(x=>x.claimed_by||x.team_label||x.claimed_at).length;const total=inventory.length||33;const available=total-claimed;$('totalStat').textContent=total;$('claimedStat').textContent=claimed;$('availableStat').textContent=available;$('inventoryLabel').textContent=`${claimed} claimed · ${available} available`;$('adminList').innerHTML=inventory.map((b)=>{const id=Number(b.id??b.basket_id);const ingredients=b.ingredients||[];const isClaimed=!!(b.claimed_by||b.team_label||b.claimed_at);const team=b.team_label||b.claimed_by||'';const chefs=Array.isArray(b.chef_names)?b.chef_names.join(', '):'';return `<div class="admin-item ${isClaimed?'claimed':'available'}"><div class="basket-top"><strong>Basket ${String(id).padStart(2,'0')}</strong><span class="pill">${isClaimed?'Claimed':'Available'}</span></div>${isClaimed?`<div><strong>${esc(team||'Claimed')}</strong>${chefs?`<div style="font-size:12px;opacity:.75">${esc(chefs)}</div>`:''}<div style="font-size:12px;opacity:.65">${Number(b.spins_used||0)} spins used</div></div>`:''}<div class="ingredients">${ingredients.map(x=>`<span class="ingredient">${esc(x)}</span>`).join('')}</div>${isClaimed?`<div class="card-actions" style="margin-top:12px"><button class="ghost small" data-cancel="${id}">Cancel claim</button></div>`:''}</div>`}).join('');$('adminList').querySelectorAll('[data-cancel]').forEach(btn=>btn.addEventListener('click',()=>cancelClaim(Number(btn.dataset.cancel),btn)));}
+async function cancelClaim(id,btn){if(!confirm(`Cancel the claim on Basket ${id}? It will return to the available pool.`))return;setBusy(btn,true,'Cancel claim');try{await callRpc('organizer_cancel_claim',{p_basket_id:id});await loadInventory();}catch(e){alert(errorText(e));}finally{setBusy(btn,false,'Cancel claim');}}
+async function resetEvent(){if(!confirm('Reset the entire event? This clears all team check-ins, previews, and claims and cannot be undone.'))return;try{await callRpc('organizer_reset_event');inventory=[];await loadInventory();alert('Event reset. All 33 baskets are available again.');}catch(e){alert(errorText(e));}}
+function exportCsv(){const rows=[['Basket','Status','Team','Chef names','Spins used','Ingredients'],...inventory.map(b=>[b.id??b.basket_id,(b.claimed_by||b.team_label||b.claimed_at)?'Claimed':'Available',b.team_label||b.claimed_by||'',Array.isArray(b.chef_names)?b.chef_names.join(', '):'',b.spins_used||0,(b.ingredients||[]).join('; ')] )];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='chopped-season-4-assignments.csv';a.click();URL.revokeObjectURL(a.href);}
+$('startButton').addEventListener('click',checkIn);$('spinButton').addEventListener('click',draw);$('participantTab').addEventListener('click',()=>showParticipant(true));$('organizerTab').addEventListener('click',()=>showParticipant(false));$('adminLoginButton').addEventListener('click',signIn);$('adminPassword').addEventListener('keydown',e=>{if(e.key==='Enter')signIn()});$('resetButton').addEventListener('click',resetEvent);$('exportButton').addEventListener('click',exportCsv);$('adminSignOutButton').addEventListener('click',async()=>{await sb.auth.signOut();$('adminDashboard').classList.add('hidden');$('adminLogin').classList.remove('hidden');message($('adminLoginMessage'),'Signed out.');});
+(async()=>{await refreshTeam();const {data:{session}}=await sb.auth.getSession();if(session){$('adminLogin').classList.add('hidden');$('adminDashboard').classList.remove('hidden');loadInventory();}})();
+</script>
+</body>
+</html>
